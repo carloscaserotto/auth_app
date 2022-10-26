@@ -1,0 +1,26 @@
+<h1>Users list</h1>
+
+<div class="input-group">
+    <%= form_tag users_path, method: 'get', local: true do %>
+        <%= text_field_tag :search, params[:search], placeholder: "Search Posts" %>
+        <span class="input-group-btn">
+            <%= submit_tag "Search", :name => nil %>
+        </span>        
+        <%= link_to 'View all users', users_path%>
+    <% end %>
+</div>
+
+
+
+<% @users.each do |user| %>
+    Username: <%= user.username %>
+    Email: <%= user.email %>
+    Admin: <%= user.admin %>
+    <%= link_to 'View', user_path(user) %>|
+    <% if logged_in? && (user.username == current_user.username || current_user.admin?)%>
+        <%= link_to 'Edit', edit_user_path(user) %>|
+        <%= link_to 'Delete', user_path(user), method: :delete,
+                            data: { confirm: "Are you sure?" } %>
+    <% end %><br>
+
+<% end %>
